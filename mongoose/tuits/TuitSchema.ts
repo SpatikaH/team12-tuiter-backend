@@ -12,6 +12,8 @@ const TuitSchema = new mongoose.Schema<Tuit>({
         replies: Number,
         retuits: Number,
         likes: Number
-    }
+    },
+    isBlocked: {type: Boolean, default: false},
+    isFlagged: {type: Boolean, default: false}
 }, {collection: "tuits"});
 export default TuitSchema;
