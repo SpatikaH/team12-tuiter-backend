@@ -1,5 +1,5 @@
 /**
- * @file Controller RESTful Web service API for users resource
+ * @file Controller RESTful Web service API for admin resource
  */
 import AdminDao from "../daos/AdminDao";
 import User from "../models/users/User";
@@ -7,14 +7,13 @@ import {Express, Request, Response} from "express";
 import AdminControllerI from "../interfaces/AdminControllerI";
 
 /**
- * @class UserController Implements RESTful Web service API for users resource.
+ * @class AdminController Implements RESTful Web service API for admins resource.
  * Defines the following HTTP endpoints:
  * <ul>
- *     <li>POST /api/users to create a new user instance</li>
- *     <li>GET /api/users to retrieve all the user instances</li>
- *     <li>GET /api/users/:uid to retrieve an individual user instance </li>
- *     <li>PUT /api/users to modify an individual user instance </li>
- *     <li>DELETE /api/users/:uid to remove a particular user instance</li>
+ *     <li>POST /admin/api/users to create a new user instance</li>
+ *     <li>GET /admin/api/users to retrieve all the user instances</li>
+ *     <li>PUT /admin/api/users to modify an individual user instance </li>
+ *     <li>DELETE /admin/api/users/:uid to remove a particular user instance</li>
  * </ul>
  * @property {AdminDao} userDao Singleton DAO implementing user CRUD operations
  * @property {AdminController} userController Singleton controller implementing
@@ -28,7 +27,7 @@ export default class AdminController implements AdminControllerI {
      * Creates singleton controller instance
      * @param {Express} app Express instance to declare the RESTful Web service
      * API
-     * @returns UserController
+     * @returns AdminController
      */
     public static getInstance = (app: Express): AdminController => {
         if(AdminController.adminController === null) {
@@ -36,22 +35,7 @@ export default class AdminController implements AdminControllerI {
 
             // RESTful User Web service API
             app.get("/admin/api/users",
-                AdminController.adminController.findAllUsers);
-            /*
-            app.get("/api/users/:uid",
-                UserController.userController.findUserById);
-            app.post("/api/users",
-                UserController.userController.createUser);
-            app.put("/api/users/:uid",
-                UserController.userController.updateUser);
-            app.delete("/api/users/:uid",
-                UserController.userController.deleteUser);
-            app.delete("/api/users",
-                UserController.userController.deleteAllUsers);
-
-            app.post("/api/login",
-                UserController.userController.login);
-            */    
+                AdminController.adminController.findAllUsers); 
         }
         return AdminController.adminController;
     }

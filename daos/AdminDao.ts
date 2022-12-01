@@ -9,8 +9,8 @@ import User from "../models/users/User";
 import UserModel from "../mongoose/users/UserModel";
 
 /**
- * @class UserDao Implements Data Access Object managing data storage
- * of Users
+ * @class AdminDao Implements Data Access Object managing data storage
+ * of Admins
  * @property {AdminDao} adminDao Private single instance of UserDao
  */
 export default class AdminDao implements AdminDaoI {
@@ -18,7 +18,7 @@ export default class AdminDao implements AdminDaoI {
 
     /**
      * Creates singleton DAO instance
-     * @returns UserDao
+     * @returns AdminDao
      */
     public static getInstance = (): AdminDao => {
         if(AdminDao.adminDao === null) {
