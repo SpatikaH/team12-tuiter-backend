@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import User from "../../models/users/User";
 const UserSchema = new mongoose.Schema<User>({
     username: {type: String, required: true, default: `testusername${Date.now()}`},
@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema<User>({
     },
     salary: {type: Number, default: 50000},
     isBlocked: {type: Boolean, default: false},
-    isAdmin: {type: Boolean, default: false}
+    blockedBy: {type: Schema.Types.ObjectId, ref: "AdminModel"},
 }, {collection: "users"});
 
 export default UserSchema;
