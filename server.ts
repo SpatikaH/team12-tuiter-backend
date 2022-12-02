@@ -15,6 +15,8 @@ import UserController from "./controllers/UserController";
 import TuitController from "./controllers/TuitController";
 import LikeController from "./controllers/LikeController";
 import mongoose from "mongoose";
+import { convertCompilerOptionsFromJson } from 'typescript';
+import AdminController from './controllers/AdminController';
 var cors = require('cors')
 
 // build the connection string
@@ -39,6 +41,7 @@ app.use(cors());
 const userController = UserController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
 const likesController = LikeController.getInstance(app);
+const adminController = AdminController.getInstance(app);
 
 /**
  * Start a server listening at port 4000 locally

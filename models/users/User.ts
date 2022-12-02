@@ -2,6 +2,7 @@ import AccountType from "./AccountType";
 import MaritalStatus from "./MaritalStatus";
 import Location from "./Location";
 import mongoose from "mongoose";
+import Admin from "../admins/Admin";
 
 export default interface User {
     _id?: mongoose.Schema.Types.ObjectId,
@@ -17,5 +18,7 @@ export default interface User {
     accountType?: AccountType,
     maritalStatus?: MaritalStatus,
     location?: Location,
-    salary?: number
+    salary?: number,
+    isBlocked?: boolean,
+    blockedBy?: Admin
 };
