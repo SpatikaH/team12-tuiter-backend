@@ -36,6 +36,8 @@ export default class AdminController implements AdminControllerI {
             // RESTful User Web service API
             app.get("/admin/api/users",
                 AdminController.adminController.findAllUsers); 
+            app.post("/admin/api/users",
+                AdminController.adminController.createUser);
         }
         return AdminController.adminController;
     }
@@ -51,4 +53,17 @@ export default class AdminController implements AdminControllerI {
     findAllUsers = (req: Request, res: Response) =>
         AdminController.adminDao.findAllUsers()
             .then((users: User[]) => res.json(users));
+
+    /**
+     * Creates a new user instance
+     * @param {Request} req Represents request from client, including body
+     * containing the JSON object for the new user to be inserted in the
+     * database
+     * @param {Response} res Represents response to client, including the
+     * body formatted as JSON containing the new user that was inserted in the
+     * database
+     */
+     createUser = (req: Request, res: Response) =>
+        AdminController.adminDao.createUser(req.body)
+            .then((user: User) => res.json(user));
 };
