@@ -36,6 +36,8 @@ export default class AdminController implements AdminControllerI {
             // RESTful User Web service API
             app.get("/admin/api/users",
                 AdminController.adminController.findAllUsers); 
+            app.put("/admin/api/users/:uid/block",
+                AdminController.adminController.blockUser); 
         }
         return AdminController.adminController;
     }
@@ -51,4 +53,16 @@ export default class AdminController implements AdminControllerI {
     findAllUsers = (req: Request, res: Response) =>
         AdminController.adminDao.findAllUsers()
             .then((users: User[]) => res.json(users));
+            
+
+    /**
+     * Modifies an existing user instance
+     * @param {Request} req Represents request from client, including path
+     * parameter uid identifying the primary key of the user to be modified
+     * @param {Response} res Represents response to client, including status
+     * on whether updating a user was successful or not
+     */
+     blockUser = (req: Request, res: Response) =>
+        AdminController.adminDao.blockUser(req.params.uid, req.body)
+             .then((status) => res.send(status));
 };
