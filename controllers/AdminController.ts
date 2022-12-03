@@ -38,6 +38,8 @@ export default class AdminController implements AdminControllerI {
                 AdminController.adminController.findAllUsers); 
             app.post("/admin/api/users",
                 AdminController.adminController.createUser);
+            app.delete("/admin/api/users/:uid",
+                AdminController.adminController.deleteUser);
         }
         return AdminController.adminController;
     }
@@ -66,4 +68,16 @@ export default class AdminController implements AdminControllerI {
      createUser = (req: Request, res: Response) =>
         AdminController.adminDao.createUser(req.body)
             .then((user: User) => res.json(user));
+
+
+    /**
+     * Removes a user instance from the database
+     * @param {Request} req Represents request from client, including path
+     * parameter uid identifying the primary key of the user to be removed
+     * @param {Response} res Represents response to client, including status
+     * on whether deleting a user was successful or not
+     */
+     deleteUser = (req: Request, res: Response) =>
+        AdminController.adminDao.deleteUser(req.params.uid)
+            .then((status) => res.send(status));
 };

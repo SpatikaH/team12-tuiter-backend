@@ -45,4 +45,12 @@ export default class AdminDao implements AdminDaoI {
     createUser = async (user: User): Promise<User> =>
         UserModel.create(user);
 
+    /**
+     * Removes user from the database.
+     * @param {string} uid Primary key of user to be removed
+     * @returns Promise To be notified when user is removed from the database
+     */
+    deleteUser = async (uid: string): Promise<any> =>
+        UserModel.deleteOne({_id: uid});
+
 };
