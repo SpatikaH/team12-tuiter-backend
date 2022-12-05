@@ -27,7 +27,16 @@ export default class AdminDao implements AdminDaoI {
         return AdminDao.adminDao;
     }
     
-    private constructor() {}
+    /**
+     * Updates user with new values in database
+     * @param {string} uid Primary key of user to be modified
+     * @param {User} user User object containing properties and their new values
+     * @returns Promise To be notified when user is updated in the database
+     */
+    blockUser = async (uid: string, user: User): Promise<any> =>
+        UserModel.updateOne(
+            {_id: uid}, 
+            {$set: user});
 
     /**
      * Uses UserModel to retrieve all user documents from users collection
