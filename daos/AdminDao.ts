@@ -2,8 +2,6 @@
  * @file Implements DAO managing data storage of users. Uses mongoose UserModel
  * to integrate with MongoDB
  */
-import AdminModel from "../mongoose/admins/AdminModel";
-import Admin from "../models/admins/Admin";
 import AdminDaoI from "../interfaces/AdminDaoI";
 import User from "../models/users/User";
 import UserModel from "../mongoose/users/UserModel";
@@ -61,5 +59,15 @@ export default class AdminDao implements AdminDaoI {
      */
     deleteUser = async (uid: string): Promise<any> =>
         UserModel.deleteOne({_id: uid});
+
+    /**
+     * Updates user with new values in database
+     * @param {string} uid Primary key of user to be modified
+     * @param {User} user User object containing properties and their new values
+     * @returns Promise To be notified when user is updated in the database
+     */
+     updateUser = async (uid: string, user: User): Promise<any> =>
+        UserModel.updateOne({_id: uid},
+        {$set: user});
 
 };
