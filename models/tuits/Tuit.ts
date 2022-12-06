@@ -9,5 +9,7 @@ export default interface Tuit {
     youtube?: String,
     avatarLogo?: String,
     imageOverlay?: String,
-    stats: Stats
+    stats: Stats,
+    isBlocked?: boolean,
+    isFlagged?: boolean
 };
