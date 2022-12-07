@@ -7,4 +7,5 @@ export default interface AdminDaoI {
     createUser (user: User): Promise<User>;
     deleteUser (uid: string): Promise<any>;
     findAllTuits (): Promise<Tuit[]>;
+    updateUser (uid: string, user: User): Promise<any>;
 };

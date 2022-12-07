@@ -6,4 +6,5 @@ export default interface AdminControllerI {
     createUser (req: Request, res: Response): void;
     deleteUser (req: Request, res: Response): void;
     findAllTuits (req: Request, res: Response): void;
+    updateUser (req: Request, res: Response): void;
 };
