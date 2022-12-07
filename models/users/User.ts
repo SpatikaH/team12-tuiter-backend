@@ -21,5 +21,6 @@ export default interface User {
     salary?: number,
     isAdmin?: boolean,
     isBlocked?: boolean,
-    blockedBy?: Admin
+    blockedBy?: Admin,
+    joinedDate?: Date
 };

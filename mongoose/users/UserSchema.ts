@@ -10,8 +10,8 @@ const UserSchema = new mongoose.Schema<User>({
     headerImage: String,
     biography: String,
     dateOfBirth: Date,
-    accountType: {type: String, enum: ["PERSONAL", "ACADEMIC", "PROFESSIONAL"]},
-    maritalStatus: {type: String, enum: ["MARRIED", "SINGLE", "WIDOWED"]},
+    accountType: {type: String, enum: ["USER", "ADMIN"], default: "USER"},
+    maritalStatus: {type: String, enum: ["MARRIED", "SINGLE", "WIDOWED"], default: "SINGLE"},
     location: {
         latitude: Number,
         longitude: Number
@@ -20,6 +20,7 @@ const UserSchema = new mongoose.Schema<User>({
     isAdmin: {type: Boolean, default: false},
     isBlocked: {type: Boolean, default: false},
     blockedBy: {type: Schema.Types.ObjectId, ref: "AdminModel"},
+    joinedDate: {type:Date, default: Date.now()}
 }, {collection: "users"});
 
 export default UserSchema;
