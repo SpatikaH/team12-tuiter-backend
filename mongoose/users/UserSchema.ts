@@ -17,6 +17,7 @@ const UserSchema = new mongoose.Schema<User>({
         longitude: Number
     },
     salary: {type: Number, default: 50000},
+    isAdmin: {type: Boolean, default: false},
     isBlocked: {type: Boolean, default: false},
     blockedBy: {type: Schema.Types.ObjectId, ref: "AdminModel"},
 }, {collection: "users"});

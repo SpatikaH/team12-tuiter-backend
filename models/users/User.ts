@@ -19,6 +19,7 @@ export default interface User {
     maritalStatus?: MaritalStatus,
     location?: Location,
     salary?: number,
+    isAdmin?: boolean,
     isBlocked?: boolean,
     blockedBy?: Admin
 };
