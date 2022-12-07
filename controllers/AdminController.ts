@@ -39,6 +39,8 @@ export default class AdminController implements AdminControllerI {
                 AdminController.adminController.findAllUsers); 
             app.put("/admin/api/users/:uid/block",
                 AdminController.adminController.blockUser); 
+            app.put("/admin/api/users/:uid/unblock",
+                AdminController.adminController.unblockUser); 
             app.post("/admin/api/users",
                 AdminController.adminController.createUser);
             app.delete("/admin/api/users/:uid",
@@ -73,6 +75,16 @@ export default class AdminController implements AdminControllerI {
      */
      blockUser = (req: Request, res: Response) =>
         AdminController.adminDao.blockUser(req.params.uid, req.body)
+             .then((status) => res.send(status));
+    /**
+     * Modifies an existing user instance
+     * @param {Request} req Represents request from client, including path
+     * parameter uid identifying the primary key of the user to be modified
+     * @param {Response} res Represents response to client, including status
+     * on whether updating a user was successful or not
+     */
+    unblockUser = (req: Request, res: Response) =>
+        AdminController.adminDao.unblockUser(req.params.uid, req.body)
              .then((status) => res.send(status));
 
     /**
