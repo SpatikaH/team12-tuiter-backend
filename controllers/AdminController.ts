@@ -5,6 +5,7 @@ import AdminDao from "../daos/AdminDao";
 import User from "../models/users/User";
 import {Express, Request, Response} from "express";
 import AdminControllerI from "../interfaces/AdminControllerI";
+import Tuit from "../models/tuits/Tuit";
 
 /**
  * @class AdminController Implements RESTful Web service API for admins resource.
@@ -38,12 +39,20 @@ export default class AdminController implements AdminControllerI {
                 AdminController.adminController.findAllUsers); 
             app.put("/admin/api/users/:uid/block",
                 AdminController.adminController.blockUser); 
+            app.put("/admin/api/users/:uid/unblock",
+                AdminController.adminController.unblockUser); 
             app.post("/admin/api/users",
                 AdminController.adminController.createUser);
             app.delete("/admin/api/users/:uid",
                 AdminController.adminController.deleteUser);
-            app.put("/api/users/:userid", 
+            app.get("/admin/api/tuits",
+                AdminController.adminController.findAllTuits);
+            app.put("/admin/api/users/:userid", 
                 AdminController.adminController.updateUser);
+            app.put("/admin/api/tuits/:tid", 
+                AdminController.adminController.updateTuit);
+            app.get("/admin/api/users/:uid",
+                AdminController.adminController.findUserById);
         }
         return AdminController.adminController;
     }
@@ -60,6 +69,16 @@ export default class AdminController implements AdminControllerI {
         AdminController.adminDao.findAllUsers()
             .then((users: User[]) => res.json(users));
             
+    /**
+     * Retrieves the user by their primary key
+     * @param {Request} req Represents request from client, including path
+     * parameter uid identifying the primary key of the user to be retrieved
+     * @param {Response} res Represents response to client, including the
+     * body formatted as JSON containing the user that matches the user ID
+     */
+     findUserById = (req: Request, res: Response) =>
+        AdminController.adminDao.findUserById(req.params.uid)
+            .then((user: User) => res.json(user));
 
     /**
      * Modifies an existing user instance
@@ -70,6 +89,17 @@ export default class AdminController implements AdminControllerI {
      */
      blockUser = (req: Request, res: Response) =>
         AdminController.adminDao.blockUser(req.params.uid, req.body)
+             .then((status) => res.send(status));
+    
+    /**
+     * Modifies an existing user instance
+     * @param {Request} req Represents request from client, including path
+     * parameter uid identifying the primary key of the user to be modified
+     * @param {Response} res Represents response to client, including status
+     * on whether updating a user was successful or not
+     */
+    unblockUser = (req: Request, res: Response) =>
+        AdminController.adminDao.unblockUser(req.params.uid, req.body)
              .then((status) => res.send(status));
 
     /**
@@ -98,7 +128,16 @@ export default class AdminController implements AdminControllerI {
             .then((status) => res.send(status));
 
     /**
-    * Modifies an existing user instance
+     * Retrieves all tuits from the database and returns an array of tuits.
+     * @param {Request} req Represents request from client
+     * @param {Response} res Represents response to client, including the
+     * body formatted as JSON arrays containing the tuit objects
+     */
+    findAllTuits = (req: Request, res: Response) =>
+        AdminController.adminDao.findAllTuits()
+            .then((tuits: Tuit[]) => res.json(tuits));
+    
+    /** Modifies an existing user instance
     * @param {Request} req Represents request from client, including path
     * parameter uid identifying the primary key of the user to be modified
     * @param {Response} res Represents response to client, including status
@@ -107,4 +146,17 @@ export default class AdminController implements AdminControllerI {
      updateUser = (req: Request, res: Response) =>
         AdminController.adminDao.updateUser(req.params.userid, req.body)
          .then(status => res.json(status));
-};
+
+
+    /**
+     * @param {Request} req Represents request from client, including path
+     * parameter tid identifying the primary key of the tuit to be modified
+     * @param {Response} res Represents response to client, including status
+     * on whether updating a tuit was successful or not
+     */
+    updateTuit = (req: Request, res: Response) => {
+        AdminController.adminDao.updateTuit(req.params.tid, req.body)
+            .then((status) => res.send(status));
+     }
+        
+    };

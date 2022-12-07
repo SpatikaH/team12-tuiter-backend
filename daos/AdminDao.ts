@@ -5,6 +5,8 @@
 import AdminDaoI from "../interfaces/AdminDaoI";
 import User from "../models/users/User";
 import UserModel from "../mongoose/users/UserModel";
+import TuitModel from "../mongoose/tuits/TuitModel";
+import Tuit from "../models/tuits/Tuit";
 
 /**
  * @class AdminDao Implements Data Access Object managing data storage
@@ -37,12 +39,31 @@ export default class AdminDao implements AdminDaoI {
             {$set: user});
 
     /**
+     * Updates user with new values in database
+     * @param {string} uid Primary key of user to be modified
+     * @param {User} user User object containing properties and their new values
+     * @returns Promise To be notified when user is updated in the database
+     */
+    unblockUser = async (uid: string, user: User): Promise<any> =>
+        UserModel.updateOne(
+            {_id: uid}, 
+            {$set: user});
+
+    /**
      * Uses UserModel to retrieve all user documents from users collection
      * @returns Promise To be notified when the users are retrieved from
      * database
      */
     findAllUsers = async (): Promise<User[]> =>
         UserModel.find().exec();
+
+    /**
+     * Uses UserModel to retrieve single user document from users collection
+     * @param {string} uid User's primary key
+     * @returns Promise To be notified when user is retrieved from the database
+     */
+     findUserById = async (uid: string): Promise<any> =>
+        UserModel.findById(uid);
 
     /**
      * Inserts user instance into the database
@@ -61,6 +82,14 @@ export default class AdminDao implements AdminDaoI {
         UserModel.deleteOne({_id: uid});
 
     /**
+     * Uses TuitModel to retrieve all tuit documents from tuits collection
+     * @returns Promise To be notified when the tuits are retrieved from
+     * database
+     */
+    findAllTuits = async (): Promise<Tuit[]> =>
+        TuitModel.find().populate("postedBy").exec();
+        
+    /**
      * Updates user with new values in database
      * @param {string} uid Primary key of user to be modified
      * @param {User} user User object containing properties and their new values
@@ -70,4 +99,14 @@ export default class AdminDao implements AdminDaoI {
         UserModel.updateOne({_id: uid},
         {$set: user});
 
+    /**
+     * Updates tuit with new values in database
+     * @param {string} tid Primary key of tuit to be modified
+     * @param {Tuit} tuit User object containing properties and their new values
+     * @returns Promise To be notified when tuit is updated in the database
+     */
+    updateTuit = async (tid: string, tuit: Tuit): Promise<any> =>
+        TuitModel.updateOne(
+            {_id: tid},
+            {$set: tuit});    
 };
