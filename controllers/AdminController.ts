@@ -49,6 +49,8 @@ export default class AdminController implements AdminControllerI {
                 AdminController.adminController.findAllTuits);
             app.put("/admin/api/users/:userid", 
                 AdminController.adminController.updateUser);
+            app.put("/admin/api/tuits/:tid", 
+                AdminController.adminController.updateTuit);
         }
         return AdminController.adminController;
     }
@@ -76,6 +78,7 @@ export default class AdminController implements AdminControllerI {
      blockUser = (req: Request, res: Response) =>
         AdminController.adminDao.blockUser(req.params.uid, req.body)
              .then((status) => res.send(status));
+    
     /**
      * Modifies an existing user instance
      * @param {Request} req Represents request from client, including path
@@ -131,4 +134,17 @@ export default class AdminController implements AdminControllerI {
      updateUser = (req: Request, res: Response) =>
         AdminController.adminDao.updateUser(req.params.userid, req.body)
          .then(status => res.json(status));
-};
+
+
+    /**
+     * @param {Request} req Represents request from client, including path
+     * parameter tid identifying the primary key of the tuit to be modified
+     * @param {Response} res Represents response to client, including status
+     * on whether updating a tuit was successful or not
+     */
+    updateTuit = (req: Request, res: Response) => {
+        AdminController.adminDao.updateTuit(req.params.tid, req.body)
+            .then((status) => res.send(status));
+     }
+        
+    };

@@ -91,4 +91,14 @@ export default class AdminDao implements AdminDaoI {
         UserModel.updateOne({_id: uid},
         {$set: user});
 
+    /**
+     * Updates tuit with new values in database
+     * @param {string} tid Primary key of tuit to be modified
+     * @param {Tuit} tuit User object containing properties and their new values
+     * @returns Promise To be notified when tuit is updated in the database
+     */
+    updateTuit = async (tid: string, tuit: Tuit): Promise<any> =>
+        TuitModel.updateOne(
+            {_id: tid},
+            {$set: tuit});    
 };
