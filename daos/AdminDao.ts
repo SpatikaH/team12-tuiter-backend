@@ -7,6 +7,8 @@ import Admin from "../models/admins/Admin";
 import AdminDaoI from "../interfaces/AdminDaoI";
 import User from "../models/users/User";
 import UserModel from "../mongoose/users/UserModel";
+import TuitModel from "../mongoose/tuits/TuitModel";
+import Tuit from "../models/tuits/Tuit";
 
 /**
  * @class AdminDao Implements Data Access Object managing data storage
@@ -62,4 +64,7 @@ export default class AdminDao implements AdminDaoI {
     deleteUser = async (uid: string): Promise<any> =>
         UserModel.deleteOne({_id: uid});
 
+
+    findAllTuits = async (): Promise<Tuit[]> =>
+        TuitModel.find().populate("postedBy").exec();
 };

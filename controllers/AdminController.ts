@@ -5,6 +5,7 @@ import AdminDao from "../daos/AdminDao";
 import User from "../models/users/User";
 import {Express, Request, Response} from "express";
 import AdminControllerI from "../interfaces/AdminControllerI";
+import Tuit from "../models/tuits/Tuit";
 
 /**
  * @class AdminController Implements RESTful Web service API for admins resource.
@@ -42,6 +43,8 @@ export default class AdminController implements AdminControllerI {
                 AdminController.adminController.createUser);
             app.delete("/admin/api/users/:uid",
                 AdminController.adminController.deleteUser);
+            app.get("/admin/api/tuits",
+                AdminController.adminController.findAllTuits);
         }
         return AdminController.adminController;
     }
@@ -94,4 +97,14 @@ export default class AdminController implements AdminControllerI {
      deleteUser = (req: Request, res: Response) =>
         AdminController.adminDao.deleteUser(req.params.uid)
             .then((status) => res.send(status));
+
+    /**
+     * Retrieves all tuits from the database and returns an array of tuits.
+     * @param {Request} req Represents request from client
+     * @param {Response} res Represents response to client, including the
+     * body formatted as JSON arrays containing the tuit objects
+     */
+    findAllTuits = (req: Request, res: Response) =>
+        AdminController.adminDao.findAllTuits()
+            .then((tuits: Tuit[]) => res.json(tuits));
 };
