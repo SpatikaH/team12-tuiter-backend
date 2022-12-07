@@ -1,3 +1,4 @@
+import Tuit from "../models/tuits/Tuit";
 import User from "../models/users/User";
 
 export default interface AdminDaoI {
@@ -5,4 +6,5 @@ export default interface AdminDaoI {
     blockUser(uid: string, user: User): Promise<User[]>;
     createUser (user: User): Promise<User>;
     deleteUser (uid: string): Promise<any>;
+    findAllTuits (): Promise<Tuit[]>;
 };
