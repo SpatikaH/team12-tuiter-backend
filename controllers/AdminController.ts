@@ -51,6 +51,8 @@ export default class AdminController implements AdminControllerI {
                 AdminController.adminController.updateUser);
             app.put("/admin/api/tuits/:tid", 
                 AdminController.adminController.updateTuit);
+            app.get("/admin/api/users/:uid",
+                AdminController.adminController.findUserById);
         }
         return AdminController.adminController;
     }
@@ -67,6 +69,16 @@ export default class AdminController implements AdminControllerI {
         AdminController.adminDao.findAllUsers()
             .then((users: User[]) => res.json(users));
             
+    /**
+     * Retrieves the user by their primary key
+     * @param {Request} req Represents request from client, including path
+     * parameter uid identifying the primary key of the user to be retrieved
+     * @param {Response} res Represents response to client, including the
+     * body formatted as JSON containing the user that matches the user ID
+     */
+     findUserById = (req: Request, res: Response) =>
+        AdminController.adminDao.findUserById(req.params.uid)
+            .then((user: User) => res.json(user));
 
     /**
      * Modifies an existing user instance

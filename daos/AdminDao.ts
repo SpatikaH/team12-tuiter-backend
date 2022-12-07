@@ -58,6 +58,14 @@ export default class AdminDao implements AdminDaoI {
         UserModel.find().exec();
 
     /**
+     * Uses UserModel to retrieve single user document from users collection
+     * @param {string} uid User's primary key
+     * @returns Promise To be notified when user is retrieved from the database
+     */
+     findUserById = async (uid: string): Promise<any> =>
+        UserModel.findById(uid);
+
+    /**
      * Inserts user instance into the database
      * @param {User} user Instance to be inserted into the database
      * @returns Promise To be notified when user is inserted into the database
