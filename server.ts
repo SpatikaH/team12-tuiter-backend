@@ -10,38 +10,69 @@
  * Connects to a remote MongoDB instance hosted on the Atlas cloud database
  * service
  */
-import express, {Request, Response} from 'express';
+import express from 'express';
+import mongoose from "mongoose";
+
 import UserController from "./controllers/UserController";
 import TuitController from "./controllers/TuitController";
 import LikeController from "./controllers/LikeController";
-import mongoose from "mongoose";
-import { convertCompilerOptionsFromJson } from 'typescript';
 import AdminController from './controllers/AdminController';
-var cors = require('cors')
+import AuthenticationController from "./controllers/AuthenticationController";
 
-// build the connection string
-const PROTOCOL = "mongodb+srv";
+//SESSION PROCESS
+const session = require('express-session');
+
+//If you want to store custom things in Sessions, you need to perform declaration-merging
+declare module "express-session" {
+    interface SessionData {
+        profile: {};
+    }
+}
+
+//CORS PROCESS
+const app = express();
+const cors = require('cors');
+app.use(express.json());
+
+app.use(cors({
+    origin: process.env.ORIGIN_URL,
+    credentials: true,
+}));
+
+//Options for our Session
+const sess = {
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: false,
+        httpOnly: true,
+    }
+}
+
+//Secure Cookies only work with HTTPS
+if (process.env.ENV === "PRODUCTION") {
+    app.set('trust proxy', 1)
+    sess.cookie.secure = true,
+        sess.cookie.httpOnly = false,
+        Object.assign(sess.cookie, { sameSite: "none" });
+}
+
+app.use(session(sess))
+
+
+//MONGO DB PROCESS
 const DB_USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
-const HOST = process.env.DB_HOST;
-const DB_NAME = process.env.DB_NAME;
-const connectionString = `${PROTOCOL}://${DB_USERNAME}:${DB_PASSWORD}@${HOST}/${DB_NAME}`;
-
-// connect to the database
-
-//TO-DO 
-//mongoose.connect(connectionString);
+//const connectionString = `${PROTOCOL}://${DB_USERNAME}:${DB_PASSWORD}@${HOST}/${DB_NAME}`;
 mongoose.connect('mongodb+srv://nshah:nshah@cluster0.egczgje.mongodb.net/tuiter-project')
 
-const app = express();
-app.use(express.json());
-app.use(cors());
-
-// create RESTful Web service API
+//Create RESTful Web service API
 const userController = UserController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
 const likesController = LikeController.getInstance(app);
 const adminController = AdminController.getInstance(app);
+const authenticationController = AuthenticationController.getInstance(app);
 
 /**
  * Start a server listening at port 4000 locally
