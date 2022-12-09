@@ -64,8 +64,7 @@ app.use(session(sess))
 //MONGO DB PROCESS
 const DB_USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
-//const connectionString = `${PROTOCOL}://${DB_USERNAME}:${DB_PASSWORD}@${HOST}/${DB_NAME}`;
-mongoose.connect('mongodb+srv://nshah:nshah@cluster0.egczgje.mongodb.net/tuiter-project')
+mongoose.connect(`mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.egczgje.mongodb.net/tuiter-project`)
 
 //Create RESTful Web service API
 const userController = UserController.getInstance(app);
