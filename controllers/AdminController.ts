@@ -6,6 +6,9 @@ import User from "../models/users/User";
 import {Express, Request, Response} from "express";
 import AdminControllerI from "../interfaces/AdminControllerI";
 import Tuit from "../models/tuits/Tuit";
+//Encryption
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 /**
  * @class AdminController Implements RESTful Web service API for admins resource.
@@ -16,8 +19,8 @@ import Tuit from "../models/tuits/Tuit";
  *     <li>PUT /admin/api/users to modify an individual user instance </li>
  *     <li>DELETE /admin/api/users/:uid to remove a particular user instance</li>
  * </ul>
- * @property {AdminDao} userDao Singleton DAO implementing user CRUD operations
- * @property {AdminController} userController Singleton controller implementing
+ * @property {AdminDao} adminDao Singleton DAO implementing admin CRUD operations
+ * @property {AdminController} adminController Singleton controller implementing
  * RESTful Web service API
  */
 export default class AdminController implements AdminControllerI {
@@ -35,25 +38,17 @@ export default class AdminController implements AdminControllerI {
             AdminController.adminController = new AdminController();
 
             // RESTful User Web service API
-            app.get("/admin/api/users",
-                AdminController.adminController.findAllUsers); 
-            app.put("/admin/api/users/:uid/block",
-                AdminController.adminController.blockUser); 
-            app.put("/admin/api/users/:uid/unblock",
-                AdminController.adminController.unblockUser); 
-            app.post("/admin/api/users",
-                AdminController.adminController.createUser);
-            app.delete("/admin/api/users/:uid",
-                AdminController.adminController.deleteUser);
-            app.get("/admin/api/tuits",
-                AdminController.adminController.findAllTuits);
-            app.put("/admin/api/users/:userid", 
-                AdminController.adminController.updateUser);
-            app.put("/admin/api/tuits/:tid", 
-                AdminController.adminController.updateTuit);
-            app.get("/admin/api/users/:uid",
-                AdminController.adminController.findUserById);
+            app.get("/admin/api/users", AdminController.adminController.findAllUsers); 
+            app.post("/admin/api/users", AdminController.adminController.createUser);
+            app.put("/admin/api/users/:uid", AdminController.adminController.updateUser);
+            app.delete("/admin/api/users/:uid", AdminController.adminController.deleteUser);
+            app.put("/admin/api/users/:uid/block", AdminController.adminController.blockUser); 
+            app.put("/admin/api/users/:uid/unblock", AdminController.adminController.unblockUser);
+            app.get("/admin/api/users/", AdminController.adminController.findUserByUsername);
+            app.get("/admin/api/tuits", AdminController.adminController.findAllTuits);
+            app.put("/admin/api/tuits/:tid", AdminController.adminController.updateTuit);
         }
+
         return AdminController.adminController;
     }
 
@@ -76,9 +71,8 @@ export default class AdminController implements AdminControllerI {
      * @param {Response} res Represents response to client, including the
      * body formatted as JSON containing the user that matches the user ID
      */
-     findUserById = (req: Request, res: Response) =>
-        AdminController.adminDao.findUserById(req.params.uid)
-            .then((user: User) => res.json(user));
+     findUserByUsername = (req: Request, res: Response) =>
+        AdminController.adminDao.findUserByUsername(req.body).then((user: User) => res.json(user));
 
     /**
      * Modifies an existing user instance
@@ -103,7 +97,7 @@ export default class AdminController implements AdminControllerI {
              .then((status) => res.send(status));
 
     /**
-     * Creates a new user instance
+     * Creates a new user instance ASSUMING a user with the same username does not exist
      * @param {Request} req Represents request from client, including body
      * containing the JSON object for the new user to be inserted in the
      * database
@@ -111,9 +105,23 @@ export default class AdminController implements AdminControllerI {
      * body formatted as JSON containing the new user that was inserted in the
      * database
      */
-     createUser = (req: Request, res: Response) =>
-        AdminController.adminDao.createUser(req.body)
-            .then((user: User) => res.json(user));
+     createUser = async (req: Request, res: Response) => {
+        const newUser = req.body;
+        const existingUser = await AdminController.adminDao.findUserByUsername(newUser.username);
+
+        //If the user already exists then say request denied (ERROR: 403)
+        if(existingUser){
+            return res.sendStatus(403);
+        }else{
+            //We don't want to save the actual password in the database!!!
+            const password = newUser.password;
+            const hash = await bcrypt.hash(password, saltRounds);
+            newUser.password = hash;
+            //Make our new user
+            const insertedUser = await AdminController.adminDao.createUser(newUser);
+            return res.json(insertedUser);
+        }
+     }
 
 
     /**
@@ -144,7 +152,7 @@ export default class AdminController implements AdminControllerI {
     * on whether updating a user was successful or not
     */
      updateUser = (req: Request, res: Response) =>
-        AdminController.adminDao.updateUser(req.params.userid, req.body)
+        AdminController.adminDao.updateUser(req.params.uid, req.body)
          .then(status => res.json(status));
 
 

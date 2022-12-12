@@ -62,8 +62,8 @@ export default class AdminDao implements AdminDaoI {
      * @param {string} uid User's primary key
      * @returns Promise To be notified when user is retrieved from the database
      */
-     findUserById = async (uid: string): Promise<any> =>
-        UserModel.findById(uid);
+     findUserByUsername = async (username: string): Promise<any> =>
+        UserModel.findOne({username});
 
     /**
      * Inserts user instance into the database

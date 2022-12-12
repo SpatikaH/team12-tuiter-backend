@@ -16,10 +16,10 @@ const UserSchema = new mongoose.Schema<User>({
         latitude: Number,
         longitude: Number
     },
-    salary: {type: Number, default: 50000},
+    salary: Number,
     isAdmin: {type: Boolean, default: false},
     isBlocked: {type: Boolean, default: false},
-    blockedBy: {type: Schema.Types.ObjectId, ref: "AdminModel"},
+    blockedBy: {type: String, default: ''},
     joinedDate: {type:Date, default: Date.now()}
 }, {collection: "users"});
 
