@@ -11,7 +11,7 @@ Our group is interested in building the admin feature because we believe access 
 ### Database Design
 The database model is created to include few new parameters to differentiate between a user and an admin. It also helps track flagged and blocked tuits along with blocked users.
 
-![img1](../Datamodel.jpg)
+![Datamodel](https://user-images.githubusercontent.com/12969516/206976322-86231fcf-b587-4352-80b4-94e947125049.jpg)
 
 
 ### User Stories and Acceptance Criteria
