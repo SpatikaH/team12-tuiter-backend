@@ -9,9 +9,9 @@
 Our group is interested in building the admin feature because we believe access control is an important part of a social networking website. Access control can be achieved when few users have rights to edit and delete while most users have view and create rights. Creating an admin tool helps us achieve different roles and responsibilities. It also provides the application the flexibility to make updates to the system without directly interacting with the database. This feature will ensure that posts and users are under surveillance and are restricted to post, comment on anything that hurts the community. It is a stand-alone feature from the existing system. This feature will help us build and understand the complete application system and connect the front-end, back-end, and database components. 
 
 ### Database Design
-The database model is created to include few new parameters to differentiate between a user and an admin. It also helps track flagged and blocked tuits along with blocked users.
+The database model is created to include few new parameters to differentiate between a user and an admin. It also helps track flagged and blocked tuits along with blocked users. 
 
-![Datamodel](https://user-images.githubusercontent.com/12969516/206976322-86231fcf-b587-4352-80b4-94e947125049.jpg)
+![Datamodel](https://user-images.githubusercontent.com/12969516/207435088-85c87608-3c64-40de-ad6c-e5be356c7161.jpg)
 
 
 ### User Stories and Acceptance Criteria
@@ -52,3 +52,15 @@ As an administrator, I want to be able to flag specific tuit from a user so that
 As an administrator, I want to be able to block a given Tuit from a given user so that I can prevent the spread of violent and/or harmful content.
 
 <img width="908" alt="blockTuit" src="https://user-images.githubusercontent.com/12969516/206976118-b3f9293b-ca2a-4844-a1ae-f6514891fcb5.png">
+
+### Deployment
+
+To run this project on your machine, clone the main branch on your machine.
+1. Create a .env file containing the following variables - ENV, SECRET, DB_USERNAME, DB_PASSWORD.
+2. Run 'npm install' to install all required packages on your machine.
+3. Run 'npm run dev' to start the server.
+4. The apis should be up on localhost:4000.
+
+
+
+
