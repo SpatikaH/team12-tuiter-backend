@@ -55,11 +55,11 @@ As an administrator, I want to be able to block a given Tuit from a given user s
 
 ### Deployment
 
-To run this project on your machine, clone the main branch on your machine.
-1. Create a .env file containing the following variables - ENV, SECRET, DB_USERNAME, DB_PASSWORD.
-2. Run 'npm install' to install all required packages on your machine.
-3. Run 'npm run dev' to start the server.
-4. The apis should be up on localhost:4000.
+To run this project on your machine, clone the main branch on your machine
+1. Create a .env file containing the following variables - ENV, SECRET, DB_USERNAME, DB_PASSWORD, ORIGIN_URL
+2. Run 'npm install' to install all required packages on your machine
+3. Run 'npm run dev' to start the server
+4. The apis should be up on localhost:4000
 
 
 
